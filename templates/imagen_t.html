@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Prueba de Hipótesis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Cálculo de Prueba de Hipótesis</h1>
+
+        <form id="calcularForm">
+            <div class="mb-3">
+                <label for="muestra1" class="form-label">Muestra 1 (separados por coma)</label>
+                <input type="text" class="form-control" id="muestra1" required>
+            </div>
+            <div class="mb-3">
+                <label for="muestra2" class="form-label">Muestra 2 (separados por coma)</label>
+                <input type="text" class="form-control" id="muestra2" required>
+            </div>
+            <div class="mb-3">
+                <label for="alpha" class="form-label">Nivel de Significancia (α)</label>
+                <input type="number" step="0.01" class="form-control" id="alpha" value="0.05" required>
+            </div>
+            <div class="mb-3">
+                <label for="hipotesis" class="form-label">Hipótesis</label>
+                <select class="form-control" id="hipotesis" required>
+                    <option value="two-tailed">Bilateral</option>
+                    <option value="right-tailed">Unilateral Derecha</option>
+                    <option value="left-tailed">Unilateral Izquierda</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Calcular</button>
+        </form>
+
+        <div id="resultado" class="mt-5"></div>
+        <div id="grafica" class="mt-5">
+            <img id="graficaImg" src="" alt="Gráfica" style="max-width: 100%; height: auto; display: none;">
+        </div>
+    </div>
+
+    <script>
+        $('#calcularForm').on('submit', function(event) {
+            event.preventDefault();
+
+            const muestra1 = $('#muestra1').val().split(',').map(Number);
+            const muestra2 = $('#muestra2').val().split(',').map(Number);
+            const alpha = parseFloat($('#alpha').val());
+            const hipotesis = $('#hipotesis').val();
+
+            $.ajax({
+                url: '/calculate',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    sample1: muestra1,
+                    sample2: muestra2,
+                    alpha: alpha,
+                    hypothesis: hipotesis
+                }),
+                success: function(data) {
+                    $('#resultado').html('<h4>' + data.message + '</h4>');
+
+                    // Mostrar la imagen generada
+                    $('#graficaImg').attr('src', '/static/grafica.png').show();
+                },
+                error: function(xhr, status, error) {
+                    alert('Hubo un error: ' + error);
+                }
+            });
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

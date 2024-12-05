@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Hipótesis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="static/img/logo_finesi.jpg" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                Red Neuronal
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('home') }}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('pg_calcular') }}">Prueba de Hipótesis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sobre Nosotros</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Introducción a la Prueba de Hipótesis t-Student para Diferencia de Medias</h2>
+        <p>La <strong>prueba t-Student</strong> se utiliza para determinar si existe una diferencia significativa entre las medias de dos grupos independientes. Es particularmente útil cuando los tamaños de las muestras son pequeños (&lt; 31) y cuando no se conoce la desviación estándar de la población.</p>
+        <p>Esta prueba compara las medias de las dos muestras utilizando la siguiente fórmula para el estadístico t:</p>
+        <p><em>t = (media1 - media2) / (raíz de [(s1² / n1) + (s2² / n2)])</em></p>
+        <p>donde:</p>
+        <ul>
+            <li><strong>media1</strong> y <strong>media2</strong> son las medias de las dos muestras.</li>
+            <li><strong>s1</strong> y <strong>s2</strong> son las desviaciones estándar de las muestras.</li>
+            <li><strong>n1</strong> y <strong>n2</strong> son los tamaños de las muestras.</li>
+        </ul>
+        <p>En esta página, puedes realizar el cálculo de la prueba t-Student para la diferencia de medias entre dos muestras. Al ingresar los datos, obtendrás el valor t, el valor p y una visualización de la distribución t-Student.</p>
+
+        <div class="container mt-5">
+            <h3>Pasos para realizar la Prueba de Hipótesis</h3>
+            <ol>
+                <li>
+                    <strong>Formulación de Hipótesis:</strong>
+                    Define la hipótesis nula (H₀) y alternativa (H₁). Por ejemplo, H₀: "Las medias son iguales", H₁: "Las medias son diferentes".
+                </li>
+                <li>
+                    <strong>Elección del Nivel de Significancia (α):</strong>
+                    Selecciona un valor de α, como 0.05 (5%), que representa la probabilidad de error tipo I.
+                </li>
+                <li>
+                    <strong>Cálculo del Estadístico t:</strong>
+                    Utiliza la fórmula para calcular el valor de t basado en las muestras proporcionadas.
+                </li>
+                <li>
+                    <strong>Determinación de Áreas de Rechazo:</strong>
+                    Identifica las áreas donde se rechaza H₀ en función de los grados de libertad y el valor de α.
+                </li>
+                <li>
+                    <strong>Toma de Decisión:</strong>
+                    Si el valor calculado de t cae en la zona de rechazo, se rechaza H₀.
+                </li>
+                <li>
+                    <strong>Conclusión:</strong>
+                    Interpreta los resultados en el contexto del problema. Por ejemplo: "La media de A no es igual a la media de B".
+                </li>
+                <li>
+                    <strong>Estimación del Intervalo de Confianza:</strong>
+                    Calcula el intervalo donde probablemente se encuentren las diferencias reales entre medias.
+                </li>
+            </ol>
+        </div>
+        <!-- Sección visual -->
+        <div class="text-center my-4">
+            <img src="static/grafica.png" alt="Distribución T-Student" class="img-fluid rounded shadow">
+            <p class="mt-3"><em>Distribución T-Student visualizada con diferentes grados de libertad.</em></p>
+        </div>
+
+        <!-- Botones rápidos -->
+        <div class="d-flex justify-content-center gap-3 my-4">
+            <a href="{{ url_for('pg_calcular') }}" class="btn btn-primary btn-lg">Calcular Prueba</a>
+            <a href="#" class="btn btn-secondary btn-lg">Guía Completa</a>
+        </div>
+
+        <!-- Beneficios -->
+        <div class="mt-5">
+            <h3>¿Por qué usar la prueba t-Student?</h3>
+            <ul>
+                <li>Evalúa diferencias significativas en escenarios con muestras pequeñas.</li>
+                <li>Ideal para análisis inicial en estudios estadísticos.</li>
+                <li>Simple de implementar con herramientas modernas.</li>
+            </ul>
+        </div>
+
+        <!-- Prueba rápida -->
+        <div class="card mt-5 shadow">
+            <div class="card-body">
+                <h4>Realiza una Prueba Rápida</h4>
+                <form action="{{ url_for('pg_calcular') }}" method="get">
+                    <div class="mb-3">
+                        <label for="quickAlpha" class="form-label">Nivel de Significancia (α)</label>
+                        <input type="number" step="0.01" class="form-control" id="quickAlpha" name="alpha" value="0.05" required>
+                    </div>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Ir a Cálculo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sobre Nosotros -->
+        <div class="mt-5">
+            <h3>Sobre Nosotros</h3>
+            <p>Somos un equipo dedicado a brindar herramientas estadísticas accesibles para estudiantes y profesionales. Este proyecto combina tecnología moderna con principios estadísticos fundamentales para facilitar la toma de decisiones basada en datos.</p>
+            <a href="#" class="btn btn-outline-primary">Conoce más</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white mt-5 py-4">
+        <div class="container text-center">
+            <p>&copy; 2024 Proyecto Estadístico. Todos los derechos reservados.</p>
+            <p>
+                <a href="https://github.com/" target="_blank" class="text-white me-3">GitHub</a>
+                <a href="#" target="_blank" class="text-white me-3">LinkedIn</a>
+                <a href="#" target="_blank" class="text-white">Contacto</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
+
